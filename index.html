@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>✦ NEXUS PAY | ₹104 GATEWAY ✦</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* NO SCROLLING - PERFECT CENTERING */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 30% 20%, #070b16, #010105);
+      font-family: 'Inter', 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Ambient animated neon background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 40%, rgba(0, 200, 255, 0.08), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 80%, rgba(255, 80, 200, 0.05), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* MAIN WRAPPER - FLEX CENTERED */
+    .app-center {
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 1.2rem;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    /* Glassmorphism + Cyberpunk Card */
+    .glass-card {
+      background: rgba(8, 18, 32, 0.7);
+      backdrop-filter: blur(16px);
+      border-radius: 2.4rem;
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    /* Shared screen styles - perfectly centered content */
+    .screen {
+      transition: opacity 0.65s cubic-bezier(0.2, 0.9, 0.3, 1.2), transform 0.6s cubic-bezier(0.2, 0.85, 0.3, 1.1);
+      will-change: opacity, transform;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.94) translateY(8px);
+      display: none;
+    }
+
+    /* ---------- INITIAL SCREEN (PRICE ANIMATION) - CENTERED ---------- */
+    .initial-screen {
+      padding: 2.2rem 1.8rem;
+      text-align: center;
+      min-height: 520px;
+      justify-content: center;
+      animation: fadeGlowEnter 0.85s ease-out;
+    }
+
+    @keyframes fadeGlowEnter {
+      0% {
+        opacity: 0;
+        transform: scale(0.96);
+        filter: blur(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .price-star {
+      position: relative;
+      margin-bottom: 1.6rem;
+    }
+
+    .price-number {
+      font-size: 6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #FFFFFF, #6efff0, #ff7bcf, #ffe284);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      animation: glowPulseText 1.5s infinite alternate ease-in-out;
+      display: inline-block;
+    }
+
+    @keyframes glowPulseText {
+      0% {
+        text-shadow: 0 0 3px cyan, 0 0 6px #ff66c0;
+      }
+      100% {
+        text-shadow: 0 0 22px cyan, 0 0 32px #ff66c0, 0 0 10px #ffdd88;
+      }
+    }
+
+    .currency-large {
+      font-size: 2.4rem;
+      background: linear-gradient(135deg, #b3f0ff, #ff99dd);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-right: 0.3rem;
+    }
+
+    .price-badge {
+      font-size: 0.8rem;
+      color: #9abef5;
+      letter-spacing: 3px;
+      margin-top: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 400;
+      backdrop-filter: blur(2px);
+    }
+
+    /* animated dots */
+    .loading-dots {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .loading-dots span {
+      width: 12px;
+      height: 12px;
+      background: cyan;
+      border-radius: 50%;
+      display: inline-block;
+      animation: dotBounce 0.9s infinite alternate;
+      box-shadow: 0 0 8px cyan;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; background: #ff66c0; box-shadow: 0 0 8px #ff66c0; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; background: #ffe16e; box-shadow: 0 0 8px #ffd966; }
+
+    @keyframes dotBounce {
+      0% { transform: translateY(0px); opacity: 0.5; }
+      100% { transform: translateY(-12px); opacity: 1; }
+    }
+
+    /* ---------- QR SECTION - FULLY CENTERED, GLASS, SCAN ANIMATION ---------- */
+    .qr-screen {
+      padding: 1.8rem 1.8rem 1.5rem 1.8rem;
+      text-align: center;
+      justify-content: center;
+      animation: slideFadeUp 0.7s ease-out;
+    }
+
+    @keyframes slideFadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .qr-headline {
+      font-size: 1.9rem;
+      font-weight: 600;
+      background: linear-gradient(125deg, #e0f2ff, #ffbef0, #ffea9e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      letter-spacing: -0.2px;
+    }
+
+    /* QR container with moving scan line */
+    .qr-cyber-container {
+      position: relative;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      padding: 1rem;
+      border-radius: 2rem;
+      border: 1.8px solid rgba(0, 230, 250, 0.7);
+      box-shadow: 0 0 18px rgba(0, 255, 255, 0.4), inset 0 0 8px rgba(255, 255, 200, 0.2);
+      transition: all 0.25s;
+      margin: 0.2rem auto;
+      width: fit-content;
+    }
+
+    .qr-image {
+      width: 220px;
+      height: 220px;
+      display: block;
+      margin: 0 auto;
+      border-radius: 1.2rem;
+      background: white;
+      padding: 8px;
+      object-fit: contain;
+    }
+
+    /* scan animation line */
+    .scan-effect-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .scan-line-anim {
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, cyan, #ff66c0, #ffdd77, transparent);
+      box-shadow: 0 0 12px cyan;
+      animation: scanVertical 2.3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 2px;
+    }
+
+    @keyframes scanVertical {
+      0% {
+        top: -2%;
+        opacity: 0.6;
+      }
+      48% {
+        opacity: 1;
+      }
+      100% {
+        top: 100%;
+        opacity: 0.6;
+      }
+    }
+
+    /* UPI APPS LOGOS SECTION - small icons at bottom */
+    .upi-logos {
+      margin-top: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+
+    .upi-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 8px;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .upi-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .upi-icon:hover {
+      transform: scale(1.05);
+      border-color: cyan;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      font-size: 0.65rem;
+      text-align: center;
+      color: #5a7bb3;
+      opacity: 0.8;
+    }
+
+    /* Responsive: maintain center and no scroll */
+    @media (max-width: 550px) {
+      .qr-image {
+        width: 180px;
+        height: 180px;
+      }
+      .price-number {
+        font-size: 4.2rem;
+      }
+      .currency-large {
+        font-size: 1.9rem;
+      }
+      .qr-headline {
+        font-size: 1.5rem;
+      }
+      .initial-screen {
+        padding: 1.8rem;
+        min-height: 460px;
+      }
+      .qr-screen {
+        padding: 1.2rem;
+      }
+      .upi-icon {
+        width: 38px;
+        height: 38px;
+      }
+    }
+
+    /* Additional glow on QR hover */
+    .qr-cyber-container:hover {
+      border-color: rgba(255, 102, 204, 0.8);
+      box-shadow: 0 0 24px #ff66c0;
+      transition: 0.2s;
+    }
+  </style>
+</head>
+<body>
+<div class="app-center">
+  <!-- PRICE ANIMATION SCREEN (CENTERED) - NEW PRICE ₹104 -->
+  <div id="initialScreen" class="screen glass-card initial-screen">
+    <div class="price-star">
+      <span class="currency-large">₹</span>
+      <span id="dynamicPrice" class="price-number">0</span>
+    </div>
+    <div class="price-badge">✦ PREMIUM TRANSACTION ✦</div>
+    <div class="loading-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div style="margin-top: 1.2rem; font-size: 0.7rem; letter-spacing: 2px; color: #7fb4ff;">SECURE GATEWAY</div>
+  </div>
+
+  <!-- QR PAYMENT SECTION (CENTERED) - UPDATED HEADING WITH ₹104 -->
+  <div id="qrScreen" class="screen glass-card qr-screen screen-hidden">
+    <div class="qr-headline">⚡ SCAN TO PAY ₹104 ⚡</div>
+    <div class="qr-cyber-container" id="qrGlowContainer">
+      <img id="qrCodeImg" class="qr-image" src="https://i.ibb.co/dsDJkRFT/IMG-20260415-144247.jpg" alt="Payment QR Code" crossorigin="anonymous">
+      <div class="scan-effect-layer">
+        <div class="scan-line-anim"></div>
+      </div>
+    </div>
+    
+    <!-- UPI APPS LOGOS (small icons) -->
+    <div class="upi-logos">
+      <div class="upi-icon">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNmj_UBW2y-w2nrz1NvmRlZYwbnhmf1b7JFwoX-DGSew&s=10" alt="Google Pay" loading="lazy">
+      </div>
+      <div class="upi-icon">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCAj034qPy8W3UTADn9XTAHnWeILHDsoDsZq4qf5JApA&s=10" alt="PhonePe" loading="lazy">
+      </div>
+      <div class="upi-icon">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuvlfobUPMmCBH9HPZ5rZ_dbYH0DzmVrlfARxDhKPMNQ&s=10" alt="Paytm" loading="lazy">
+      </div>
+      <div class="upi-icon">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShjYJT4-IFP0l7PuHDLXIBGIzDt4TSVx_1mekhGChDWA&s=10" alt="Amazon Pay" loading="lazy">
+      </div>
+    </div>
+    <div class="footer-note">🔐 encrypted · scan with any UPI app</div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // DOM elements
+    const initialContainer = document.getElementById('initialScreen');
+    const qrContainer = document.getElementById('qrScreen');
+    const priceSpan = document.getElementById('dynamicPrice');
+    const qrImageElement = document.getElementById('qrCodeImg');
+
+    // NEW PRICE: ₹104
+    const TARGET_PRICE = 104;
+    let transitionTimer = null;
+
+    // Smooth count-up: 0 -> ₹104 with easing + glowing effect
+    function animatePriceCountUp() {
+      const duration = 1950; // 1.95 seconds smooth
+      const startTime = performance.now();
+      function updateCounter(now) {
+        const elapsed = now - startTime;
+        let progress = Math.min(1, elapsed / duration);
+        const easeCubicOut = 1 - Math.pow(1 - progress, 3);
+        let currentValue = Math.floor(easeCubicOut * TARGET_PRICE);
+        if (currentValue > TARGET_PRICE) currentValue = TARGET_PRICE;
+        priceSpan.innerText = currentValue;
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          priceSpan.innerText = TARGET_PRICE;
+          // final pulse effect
+          priceSpan.style.animation = 'glowPulseText 0.5s infinite alternate';
+          setTimeout(() => {
+            if (priceSpan) priceSpan.style.animation = '';
+          }, 800);
+        }
+      }
+      requestAnimationFrame(updateCounter);
+    }
+
+    // TRANSITION: fade out price screen, fade in QR screen (smooth, centered)
+    function performTransitionToQRScreen() {
+      // Apply transition classes: both screens crossfade nicely
+      initialContainer.classList.add('screen-hidden');
+      qrContainer.classList.remove('screen-hidden');
+      
+      // Extra: add a glowing border pulse to QR container on entry
+      const qrWrapper = document.querySelector('.qr-cyber-container');
+      if (qrWrapper) {
+        qrWrapper.style.transition = 'box-shadow 0.4s';
+        qrWrapper.style.boxShadow = '0 0 0 3px rgba(0,255,255,0.7), 0 0 32px cyan';
+        setTimeout(() => {
+          if (qrWrapper) qrWrapper.style.boxShadow = '';
+        }, 900);
+      }
+    }
+    
+    // fallback for QR image if loading fails (robust)
+    function setQRFallback() {
+      if (qrImageElement) {
+        qrImageElement.onerror = () => {
+          // Generate QR code with updated amount ₹104
+          qrImageElement.src = "https://quickchart.io/qr?text=upi://pay?pa=merchant@pay&pn=NexusStore&am=104&cu=INR&size=240&margin=2&dark=0a0f1e&light=ffffff";
+          qrImageElement.alt = "payment qr fallback ₹104";
+        };
+      }
+    }
+    
+    // Optional: Interactive scan pulse when tapping QR (enhance UX, no verification)
+    function addQRClickEffect() {
+      const qrBox = document.querySelector('.qr-cyber-container');
+      if (qrBox) {
+        qrBox.addEventListener('click', () => {
+          const scanAnim = document.querySelector('.scan-line-anim');
+          if (scanAnim) {
+            scanAnim.style.animation = 'none';
+            scanAnim.offsetHeight;
+            scanAnim.style.animation = 'scanVertical 2.3s infinite cubic-bezier(0.4, 0, 0.2, 1)';
+          }
+          // subtle visual feedback only
+          const tempGlow = qrBox.style.boxShadow;
+          qrBox.style.boxShadow = '0 0 0 2px rgba(0,255,255,0.8), 0 0 28px cyan';
+          setTimeout(() => {
+            qrBox.style.boxShadow = tempGlow;
+          }, 300);
+        });
+      }
+    }
+    
+    // ensure body no overflow (double lock)
+    function lockBodyScroll() {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    }
+    
+    // TRANSITION SCHEDULE: after counting completes + extra buffer for smoothness
+    function scheduleSmoothTransition() {
+      // Wait 2.4 seconds after load (counting takes ~1.95s, we give slight margin)
+      transitionTimer = setTimeout(() => {
+        performTransitionToQRScreen();
+      }, 2400);
+    }
+    
+    // initialize all features (no verification, no timer, no expiry - pure payment gateway)
+    function init() {
+      lockBodyScroll();
+      animatePriceCountUp();       // 0 -> ₹104 dynamic
+      scheduleSmoothTransition();  // auto transition after 2.4 sec
+      setQRFallback();
+      addQRClickEffect();          // just interactive scan line refresh
+    }
+    
+    init();
+  })();
+</script>
+</body>
+</html>
